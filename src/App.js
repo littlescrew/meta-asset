@@ -1,16 +1,17 @@
-import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { Canvas, useFrame } from "@react-three/fiber";
+import logo from "./logo.svg";
+import "./App.css";
 
 function Box(props) {
   // This reference gives us direct access to the THREE.Mesh object
-  const ref = useRef()
+  const ref = useRef();
   // Hold state for hovered and clicked events
-  const [hovered, hover] = useState(false)
-  const [clicked, click] = useState(false)
+  const [hovered, hover] = useState(false);
+  const [clicked, click] = useState(false);
   // Subscribe this component to the render-loop, rotate the mesh every frame
-  useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+  useFrame((state, delta) => (ref.current.rotation.x += 0.01));
   // Return the view, these are regular Threejs elements expressed in JSX
   return (
     <mesh
@@ -19,11 +20,41 @@ function Box(props) {
       scale={clicked ? 1.5 : 1}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}>
+      onPointerOut={(event) => hover(false)}
+    >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
     </mesh>
-  )
+  );
+}
+
+// App.js
+function Home() {
+  return (
+    <>
+      <main>
+        <h2>Welcome to the homepage!</h2>
+        <p>You can do this, I believe in you.</p>
+      </main>
+      <nav>
+        <Link to="/about">About</Link>
+      </nav>
+    </>
+  );
+}
+
+function About() {
+  return (
+    <>
+      <main>
+        <h2>Who are we?</h2>
+        <p>That feels like an existential question, don't you think?</p>
+      </main>
+      <nav>
+        <Link to="/">Home</Link>
+      </nav>
+    </>
+  );
 }
 
 function App() {
@@ -31,17 +62,11 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Welcome to React Router!</h1>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="about" element={<About />} />
+        </Routes>
       </header>
       <Canvas>
         <ambientLight intensity={0.5} />
